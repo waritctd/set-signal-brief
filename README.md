@@ -39,9 +39,9 @@ npm run build        # dist/index.html (single file)
 
 ## Deploy the site
 
-**GitHub Pages (zero config):** push to `main`; `.github/workflows/deploy-pages.yml` builds and publishes. In the repo settings → Pages, set *Source* to **GitHub Actions** once. The site will be at `https://<user>.github.io/set-signal-brief/`.
+**Vercel (default):** import the repo at vercel.com/new; `vercel.json` already sets build `npm run build`, output `dist`. Every push to `main` redeploys. Add env `VITE_API_BASE` only if you change Supabase projects.
 
-**Vercel / Netlify:** import the repo; `vercel.json` already sets build `npm run build`, output `dist`. Add env `VITE_API_BASE` if you change projects.
+**GitHub Pages (optional):** enable Settings → Pages → Source **GitHub Actions**, then run the *Deploy site to GitHub Pages* workflow manually from the Actions tab.
 
 After the first deploy, tell the API where the site lives so `GET /functions/v1/landing` redirects there:
 
