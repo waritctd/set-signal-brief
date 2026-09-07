@@ -18,19 +18,24 @@ const toNum = (o: Record<string, unknown>) =>
   Object.fromEntries(Object.entries(o).map(([k, v]) => [k, typeof v === "string" && /^-?\d+(\.\d+)?$/.test(v) ? Number(v) : v]));
 
 async function summary() {
-  const [regime, top, series, score, subs] = await Promise.all([
+  const [regime, top, series, score, subs, cfg, brief] = await Promise.all([
     sb.from("v_latest_regime").select("*").maybeSingle(),
     sb.from("v_latest_screen").select("symbol,close,chg_1d_pct,ret_20d_pct,rsi14,vol_ratio_20,score,breakout_20d").limit(5),
     sb.from("v_set_series").select("trade_date,close"),
     sb.from("v_scorecard_summary").select("*").maybeSingle(),
     sb.from("subscribers").select("email", { count: "exact", head: true }),
+    sb.from("v_public_config").select("key,value"),
+    sb.from("v_latest_brief").select("trade_date,title,regime,body_md").maybeSingle(),
   ]);
+  const config = Object.fromEntries((cfg.data ?? []).map((r) => [r.key, r.value]));
   return {
     regime: regime.data ? toNum(regime.data) : null,
     top: (top.data ?? []).map(toNum),
     set_series: (series.data ?? []).reverse().map((r) => ({ d: r.trade_date, c: Number(r.close) })),
     score: score.data && score.data.calls != null ? toNum(score.data) : null,
     subscribers: subs.count ?? 0,
+    pricing: { pro_thb: Number(config.price_pro_thb ?? 99), pro_regular_thb: Number(config.price_pro_regular_thb ?? 199), pay_url_pro: config.pay_url_pro || null },
+    latest_brief: brief.data ?? null,
   };
 }
 
@@ -59,7 +64,7 @@ Deno.serve(async (req: Request) => {
   }
 
   if (req.method === "GET") {
-    // The front end is a static site (Vercel). Redirect there when configured.
+    // The front end is a static site (GitHub Pages / Vercel). Redirect there when configured.
     const { data } = await sb.from("app_config").select("value").eq("key", "site_url").maybeSingle();
     if (data?.value) return Response.redirect(data.value, 302);
     return json({ service: "set-signal-brief", endpoints: ["GET /api/summary", "POST /subscribe"] });

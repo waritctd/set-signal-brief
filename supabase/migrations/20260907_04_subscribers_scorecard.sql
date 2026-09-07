@@ -23,3 +23,13 @@ select count(distinct trade_date) as briefs_scored, count(*) as calls, round(avg
        round(avg(set_fwd_5d_pct),2) as avg_set_5d_pct,
        round(100.0*count(*) filter (where fwd_5d_pct > set_fwd_5d_pct)/nullif(count(*) filter (where fwd_5d_pct is not null),0),1) as beat_set_5d_pct
 from public.scorecard() where fwd_5d_pct is not null;
+
+-- Brief body for the on-site sample issue + public pricing/payment config
+alter table public.briefs add column if not exists title text, add column if not exists body_md text;
+create or replace view public.v_latest_brief as
+  select trade_date, title, regime, market_summary, top_setups, notion_url, body_md, created_at
+  from public.briefs where body_md is not null order by trade_date desc limit 1;
+insert into public.app_config(key, value) values ('pay_url_pro', ''), ('price_pro_thb', '99'), ('price_pro_regular_thb', '199')
+on conflict (key) do nothing;
+create or replace view public.v_public_config as
+  select key, value from public.app_config where key in ('pay_url_pro','price_pro_thb','price_pro_regular_thb','site_url');

@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { Activity, Gauge, ShieldAlert, ArrowRight, Clock, Database, FileText } from "lucide-react";
 import LiveCard, { LiveCardSkeleton } from "./components/LiveCard";
 import SignupForm from "./components/SignupForm";
+import SampleIssue from "./components/SampleIssue";
 import { fetchSummary, pct, type Summary } from "./lib/api";
+import { ExternalLink } from "lucide-react";
 
 function useSummary() {
   const [data, setData] = useState<Summary | null>(null);
@@ -36,7 +38,10 @@ export default function App() {
           <div className="text-[17px] font-bold tracking-tight">SET Signal Brief</div>
           <div className="text-[12.5px] text-muted dark:text-muted-dark">สรุปสัญญาณเทคนิค SET100 ทุกเช้า · ภาษาไทย</div>
         </div>
-        <a href="#join" className="btn">รับฟรีทุกเช้า</a>
+        <nav className="flex items-center gap-4">
+          <a href="#sample" className="hidden text-[14px] font-medium text-muted hover:text-ink dark:text-muted-dark dark:hover:text-ink-dark sm:inline">ดูตัวอย่างฉบับ</a>
+          <a href="#join" className="btn">รับฟรีทุกเช้า</a>
+        </nav>
       </header>
 
       <section className="grid grid-cols-1 items-start gap-9 pb-6 pt-10 md:grid-cols-[1.05fr_1fr] md:pt-14">
@@ -98,7 +103,9 @@ export default function App() {
       <section id="join" className="mt-14 scroll-mt-8">
         <h2 className="text-[26px] font-bold tracking-tight">สมัครรับ</h2>
         <p className="mt-1 max-w-[62ch] text-muted dark:text-muted-dark">
-          ช่วง Early Bird: ล็อกราคานี้ตลอดอายุสมาชิก เปิดรับสมาชิกรุ่นแรกจำนวนจำกัด การชำระเงินยังไม่เปิด — จองสิทธิ์ก่อนแล้วเราจะติดต่อกลับ
+          {data?.pricing?.pay_url_pro
+            ? "ช่วง Early Bird: ล็อกราคานี้ตลอดอายุสมาชิก ชำระผ่าน PromptPay หรือบัตรได้ทันที หรือกรอกอีเมลเพื่อรับฉบับฟรีก่อน"
+            : "ช่วง Early Bird: ล็อกราคานี้ตลอดอายุสมาชิก เปิดรับสมาชิกรุ่นแรกจำนวนจำกัด การชำระเงินยังไม่เปิด — จองสิทธิ์ก่อนแล้วเราจะติดต่อกลับ"}
         </p>
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="card p-5">
@@ -114,16 +121,31 @@ export default function App() {
             <h3 className="text-[18px] font-semibold">
               Pro <span className="ml-2 rounded-full bg-amber-soft px-2 py-0.5 text-[11.5px] font-semibold text-amber dark:bg-amber-softdark dark:text-amber-dark">Early Bird</span>
             </h3>
-            <div className="mt-1 text-[30px] font-bold tracking-tight">390 <span className="text-[14px] font-normal text-muted dark:text-muted-dark">บาท / เดือน · ปกติ 590</span></div>
+            <div className="mt-1 text-[30px] font-bold tracking-tight">{data?.pricing?.pro_thb ?? 99} <span className="text-[14px] font-normal text-muted dark:text-muted-dark">บาท / เดือน · ปกติ {data?.pricing?.pro_regular_thb ?? 199}</span></div>
             <ul className="mt-3 space-y-1.5 text-[14.5px]">
               <li>· ฉบับเต็มทุกวันทำการ: Top 5 พร้อมแนวรับ-แนวต้าน-ATR-stop</li>
               <li>· Breakout / Overbought / หุ้นอ่อนแอ + แผนประจำวัน</li>
               <li>· ตารางผลตอบแทนย้อนหลังของทุก setup (โปร่งใส ไม่เลือกโชว์)</li>
               <li>· เข้าถึงข้อมูล screen ทั้ง SET100 รายวัน</li>
             </ul>
+            {data?.pricing?.pay_url_pro && (
+              <a href={data.pricing.pay_url_pro} target="_blank" rel="noopener" className="btn mt-4 w-full">
+                สมัคร Pro {data.pricing.pro_thb} บาท/เดือน <ExternalLink className="h-4 w-4" aria-hidden />
+              </a>
+            )}
           </div>
         </div>
         <div className="mt-4"><SignupForm /></div>
+      </section>
+
+      <section id="sample" className="mt-14 scroll-mt-8">
+        <h2 className="text-[26px] font-bold tracking-tight">หน้าตาของฉบับจริง</h2>
+        <p className="mt-1 max-w-[60ch] text-muted dark:text-muted-dark">นี่คือฉบับล่าสุดที่ระบบเขียนจริง ไม่ใช่ตัวอย่างสมมติ — สมาชิก Pro ได้รับแบบนี้ทุกเช้าวันทำการ</p>
+        <div className="mt-6">
+          {data?.latest_brief ? <SampleIssue brief={data.latest_brief} /> : (
+            <div className="card p-5 text-[14px] text-muted dark:text-muted-dark">ฉบับล่าสุดกำลังโหลด…</div>
+          )}
+        </div>
       </section>
 
       <section className="mt-14">

@@ -23,6 +23,8 @@ export interface Summary {
   set_series: { d: string; c: number }[];
   score: { briefs_scored: number; calls: number; avg_call_5d_pct: number; avg_set_5d_pct: number; beat_set_5d_pct: number } | null;
   subscribers: number;
+  pricing: { pro_thb: number; pro_regular_thb: number; pay_url_pro: string | null };
+  latest_brief: { trade_date: string; title: string | null; regime: Regime | null; body_md: string } | null;
 }
 
 export async function fetchSummary(): Promise<Summary> {

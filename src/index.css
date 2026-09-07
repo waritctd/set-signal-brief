@@ -14,3 +14,25 @@
   .btn { @apply inline-flex items-center justify-center gap-2 rounded-md bg-teal px-5 py-2.5 font-semibold text-white transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber disabled:opacity-60 dark:bg-teal-dark dark:text-ground-dark; }
   .input { @apply w-full rounded-md border border-line bg-surface px-3 py-2.5 text-ink outline-none transition focus:border-teal focus-visible:ring-2 focus-visible:ring-teal-soft dark:border-line-dark dark:bg-surface-dark dark:text-ink-dark dark:focus:border-teal-dark dark:focus-visible:ring-teal-softdark; }
 }
+
+/* Rendered Markdown of the sample issue */
+.prose-brief { font-size: 15px; line-height: 1.7; }
+.prose-brief > * + * { margin-top: 0.9em; }
+.prose-brief h2 { font-size: 18px; font-weight: 700; margin-top: 1.6em; letter-spacing: -0.01em; }
+.prose-brief h3 { font-size: 16px; font-weight: 600; }
+.prose-brief p { max-width: 72ch; }
+.prose-brief blockquote { border-left: 3px solid #1E6B62; background: #DDEDEA; padding: 10px 14px; border-radius: 6px; }
+@media (prefers-color-scheme: dark) { .prose-brief blockquote { border-color: #62C2B4; background: #1B3733; } }
+.prose-brief blockquote p { margin: 0; }
+.prose-brief ul, .prose-brief ol { padding-left: 1.4em; }
+.prose-brief ul { list-style: disc; } .prose-brief ol { list-style: decimal; }
+.prose-brief li + li { margin-top: 0.3em; }
+.prose-brief table { width: 100%; border-collapse: collapse; font-size: 13.5px; display: block; overflow-x: auto; font-variant-numeric: tabular-nums; }
+.prose-brief th, .prose-brief td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #D9E1DF; vertical-align: top; }
+@media (prefers-color-scheme: dark) { .prose-brief th, .prose-brief td { border-color: #273633; } }
+.prose-brief th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #66746F; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .prose-brief th { color: #93A3A0; } }
+.prose-brief hr { border: 0; border-top: 1px solid #D9E1DF; margin: 1.4em 0; }
+@media (prefers-color-scheme: dark) { .prose-brief hr { border-color: #273633; } }
+.prose-brief em { color: #66746F; font-size: 13px; }
+@media (prefers-color-scheme: dark) { .prose-brief em { color: #93A3A0; } }

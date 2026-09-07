@@ -37,7 +37,7 @@ export default function SignupForm({ defaultPlan = "pro" }: { defaultPlan?: "fre
         <legend className="mb-2 block text-[13px] text-muted dark:text-muted-dark">สนใจแพ็กเกจ</legend>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {([
-            { v: "pro", t: "Pro Early Bird", s: "390 บาท/เดือน · ฉบับเต็มทุกวัน" },
+            { v: "pro", t: "Pro Early Bird", s: "99 บาท/เดือน · ฉบับเต็มทุกวัน" },
             { v: "free", t: "Free", s: "Regime + setup อันดับ 1 ทุกเช้า" },
           ] as const).map((o) => (
             <label key={o.v} className={`flex cursor-pointer items-start gap-3 rounded-md border px-3 py-2.5 transition ${plan === o.v ? "border-teal bg-teal-soft/60 dark:border-teal-dark dark:bg-teal-softdark" : "border-line dark:border-line-dark"}`}>
