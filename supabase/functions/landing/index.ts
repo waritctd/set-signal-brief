@@ -21,7 +21,7 @@ async function summary() {
   const [regime, top, series, score, subs] = await Promise.all([
     sb.from("v_latest_regime").select("*").maybeSingle(),
     sb.from("v_latest_screen").select("symbol,close,chg_1d_pct,ret_20d_pct,rsi14,vol_ratio_20,score,breakout_20d").limit(5),
-    sb.from("daily_prices").select("trade_date,close").eq("symbol", "SET").order("trade_date", { ascending: false }).limit(30),
+    sb.from("v_set_series").select("trade_date,close"),
     sb.from("v_scorecard_summary").select("*").maybeSingle(),
     sb.from("subscribers").select("email", { count: "exact", head: true }),
   ]);
@@ -59,7 +59,7 @@ Deno.serve(async (req: Request) => {
   }
 
   if (req.method === "GET") {
-    // The front end is a static site (GitHub Pages / Vercel). Redirect there when configured.
+    // The front end is a static site (Vercel). Redirect there when configured.
     const { data } = await sb.from("app_config").select("value").eq("key", "site_url").maybeSingle();
     if (data?.value) return Response.redirect(data.value, 302);
     return json({ service: "set-signal-brief", endpoints: ["GET /api/summary", "POST /subscribe"] });

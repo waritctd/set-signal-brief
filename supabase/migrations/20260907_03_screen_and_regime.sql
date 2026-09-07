@@ -88,3 +88,6 @@ create or replace view public.v_data_health as
          (select count(distinct symbol) from public.daily_prices where trade_date = (select max(trade_date) from public.daily_prices)) as symbols_on_latest_date,
          (select finished_at from public.fetch_runs order by id desc limit 1) as last_fetch_finished,
          (select symbols_fail from public.fetch_runs order by id desc limit 1) as last_fetch_failures;
+
+create or replace view public.v_set_series as
+  select trade_date, close from public.daily_prices where symbol = 'SET' order by trade_date desc limit 30;

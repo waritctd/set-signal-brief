@@ -42,10 +42,11 @@ export async function subscribe(input: { email: string; name?: string; plan: "fr
   return j;
 }
 
+const TH_MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+// Formats a YYYY-MM-DD trade date as Thai day/month/BE year without any timezone conversion.
 export const thDate = (iso: string) => {
-  const d = new Date(iso + "T00:00:00+07:00");
-  const m = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."][d.getUTCMonth()];
-  return `${d.getUTCDate()} ${m} ${d.getUTCFullYear() + 543}`;
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${d} ${TH_MONTHS[(m || 1) - 1]} ${y + 543}`;
 };
 export const pct = (n: number | null | undefined, digits = 2) =>
   n == null ? "–" : `${n > 0 ? "+" : ""}${Number(n).toFixed(digits)}%`;
