@@ -1,0 +1,8 @@
+# Supabase CLI config (only the parts that matter for deploys)
+project_id = "set-quant"
+
+[functions.fetch-set-prices]
+verify_jwt = true
+
+[functions.landing]
+verify_jwt = false   # public API: /api/summary and /subscribe are called from the static site

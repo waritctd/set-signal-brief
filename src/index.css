@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+  h1, h2, h3 { text-wrap: balance; }
+  .tnum { font-variant-numeric: tabular-nums; }
+}
+@layer components {
+  .card { @apply rounded-lg border border-line bg-surface dark:border-line-dark dark:bg-surface-dark; }
+  .eyebrow { @apply text-[11.5px] font-semibold uppercase tracking-[0.12em] text-muted dark:text-muted-dark; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-md bg-teal px-5 py-2.5 font-semibold text-white transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber disabled:opacity-60 dark:bg-teal-dark dark:text-ground-dark; }
+  .input { @apply w-full rounded-md border border-line bg-surface px-3 py-2.5 text-ink outline-none transition focus:border-teal focus-visible:ring-2 focus-visible:ring-teal-soft dark:border-line-dark dark:bg-surface-dark dark:text-ink-dark dark:focus:border-teal-dark dark:focus-visible:ring-teal-softdark; }
+}
